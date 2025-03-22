@@ -13,6 +13,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 git 'https://github.com/Heena-dotcom/End-to-End-DevOps.git'
+                sh 'cd Application-Code'
             }
         }
 
