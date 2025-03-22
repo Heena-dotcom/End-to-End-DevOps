@@ -3,6 +3,7 @@ version: "3.8"
 services:
   backend:
     build: ./backend
+    image: heena2325/todo-backend:latest
     ports:
       - "3001:3001"
     depends_on:
@@ -16,6 +17,7 @@ services:
 
   frontend:
     build: ./frontend
+    image: heena2325/todo-frontend:latest
     ports:
       - "3000:3000"
     depends_on:

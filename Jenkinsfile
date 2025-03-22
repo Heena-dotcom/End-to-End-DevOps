@@ -21,14 +21,14 @@ pipeline {
             parallel {
                 stage('Install Frontend Dependencies') {
                     steps {
-                        dir('frontend') {
+                        dir('Application-Code/frontend') {
                             sh 'npm install'
                         }
                     }
                 }
                 stage('Install Backend Dependencies') {
                     steps {
-                        dir('backend') {
+                        dir('Application-Code/backend') {
                             sh 'npm install'
                         }
                     }
@@ -40,14 +40,14 @@ pipeline {
             parallel {
                 stage('Frontend Tests') {
                     steps {
-                        dir('frontend') {
+                        dir('Application-Code/frontend') {
                             sh 'npm test -- --watchAll=false'
                         }
                     }
                 }
                 stage('Backend Tests') {
                     steps {
-                        dir('backend') {
+                        dir('Application-Code/backend') {
                             sh 'npm test'
                         }
                     }
@@ -58,6 +58,7 @@ pipeline {
         stage('Build Docker Images') {
             steps {
                 script {
+                    sh 'cd Application-Code'
                     sh 'docker build -t $IMAGE_FRONTEND ./frontend'
                     sh 'docker build -t $IMAGE_BACKEND ./backend'
                     sh 'docker build -t $IMAGE_MONGO ./mongodb'
