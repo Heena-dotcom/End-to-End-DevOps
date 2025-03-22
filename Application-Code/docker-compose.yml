@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/todo
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    restart: always
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    restart: always
+
+  mongo:
+    image: mongo:6.0
+    container_name: mongo_container
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+volumes:
+  mongo_data:
