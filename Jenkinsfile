@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/your-repo.git'
+                git 'https://github.com/Heena-dotcom/End-to-End-DevOps.git'
             }
         }
 
