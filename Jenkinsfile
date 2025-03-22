@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = 'dockerhub' 
+        DOCKERHUB_CREDENTIALS = 'dockerhub-credentials' 
         DOCKER_HUB_USERNAME = 'heena2325'
         IMAGE_FRONTEND = 'heena2325/todo-frontend'
         IMAGE_BACKEND = 'heena2325/todo-backend'
