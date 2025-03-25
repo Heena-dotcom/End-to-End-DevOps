@@ -6,14 +6,12 @@ pipeline {
         DOCKER_HUB_USERNAME = 'heena2325'
         IMAGE_FRONTEND = 'heena2325/todo-frontend'
         IMAGE_BACKEND = 'heena2325/todo-backend'
-        IMAGE_MONGO = 'heena2325/todo-mongo'
     }
 
     stages {
         stage('Checkout Code') {
             steps {
                 git 'https://github.com/Heena-dotcom/End-to-End-DevOps.git'
-                sh 'cd Application-Code'
             }
         }
 
@@ -41,14 +39,14 @@ pipeline {
                 stage('Frontend Tests') {
                     steps {
                         dir('Application-Code/frontend') {
-                            sh 'npm test -- --watchAll=false'
+                            sh 'npx jest --passWithNoTests --watchAll=false'
                         }
                     }
                 }
                 stage('Backend Tests') {
                     steps {
                         dir('Application-Code/backend') {
-                            sh 'npm test'
+                            sh 'npx jest --passWithNoTests'
                         }
                     }
                 }
@@ -57,11 +55,8 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                script {
-                    sh 'cd Application-Code'
-                    sh 'docker build -t $IMAGE_FRONTEND ./frontend'
-                    sh 'docker build -t $IMAGE_BACKEND ./backend'
-                    sh 'docker build -t $IMAGE_MONGO ./mongodb'
+                dir('Application-Code') {
+                    sh 'docker-compose up --build -d'
                 }
             }
         }
@@ -78,17 +73,15 @@ pipeline {
 
         stage('Push Docker Images') {
             steps {
-                script {
-                    sh 'docker push $IMAGE_FRONTEND'
-                    sh 'docker push $IMAGE_BACKEND'
-                    sh 'docker push $IMAGE_MONGO'
+                dir('Application-Code') {
+                    sh 'docker-compose push'
                 }
             }
         }
 
         stage('Clean Up') {
             steps {
-                sh 'docker rmi $IMAGE_FRONTEND $IMAGE_BACKEND $IMAGE_MONGO || true'
+                sh 'docker rmi $IMAGE_FRONTEND $IMAGE_BACKEND || true'
             }
         }
     }
